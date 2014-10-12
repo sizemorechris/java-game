@@ -16,6 +16,7 @@ public class BlockHead extends StateBasedGame{
 		AppGameContainer app = new AppGameContainer(new BlockHead("Block Head"));
 		app.setShowFPS(false);
 		app.setTargetFrameRate(60);
+		app.setAlwaysRender(true);
 		app.setDisplayMode(800, 600, false);
 		app.start();	
 	}
