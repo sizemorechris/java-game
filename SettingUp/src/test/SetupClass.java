@@ -5,36 +5,29 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class SetupClass extends BasicGame{
+public class SetupClass extends StateBasedGame{
+	
+	public static int gameScore = 0;
+	public static int lives = 3;
 	
 	public SetupClass(String title) {
 		super(title);
 	}
 	
-	@Override
-	public void init(GameContainer container) throws SlickException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void update(GameContainer container, int delta) throws SlickException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void render(GameContainer container, Graphics g) throws SlickException {
-		g.drawString("Hello World!", 50, 50);
-		
-	}
-	
 	public static void main(String[] args) throws SlickException {	
 		AppGameContainer app = new AppGameContainer(new SetupClass("Setup Test"));
 		app.setShowFPS(false);
+		app.setTargetFrameRate(60);
 		app.setDisplayMode(800, 600, false);
 		app.start();
+	}
+
+	@Override
+	public void initStatesList(GameContainer container) throws SlickException {
+		this.addState(new GameState());
+		this.addState(new GameOverState());
 	}
 
 }
