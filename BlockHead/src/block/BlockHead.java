@@ -19,13 +19,14 @@ public class BlockHead extends StateBasedGame{
 		app.setAlwaysRender(true);
 		app.setDisplayMode(800, 600, false);
 		app.start();	
+		
 	}
 
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
-		// TODO Auto-generated method stub
 		this.addState(new GameState());
 		this.addState(new GameOverState());
+		this.addState(new GameWinState());
 	}
 
 }

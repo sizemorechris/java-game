@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class GameOverState extends BasicGameState{
+public class GameWinState extends BasicGameState{
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
@@ -19,7 +19,7 @@ public class GameOverState extends BasicGameState{
 	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
-		g.drawString("Game Over", 400, 300);
+		g.drawString("You Win!", 400, 300);
 		g.drawString("Press enter to play again", 400, 350);
 		
 	}
@@ -34,7 +34,8 @@ public class GameOverState extends BasicGameState{
 
 	@Override
 	public int getID() {
-		return 1;
+		return 2;
 	}
 
 }
+
