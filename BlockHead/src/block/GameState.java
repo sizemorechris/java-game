@@ -68,7 +68,8 @@ public class GameState extends BasicGameState{
 		if (!ready) {
 			g.setColor(Color.black);
 			g.drawString("Press Right Arrow When Ready", 375, 300);
-			g.drawString("Up Arrow/Spacebar to Jump", 375, 250);
+			g.drawString("Left Arrow to Slow Down", 375, 250);
+			g.drawString("Up Arrow/Spacebar to Jump", 375, 200);
 		}
 		if (dead) {
 			g.setColor(Color.red);
@@ -140,9 +141,12 @@ public class GameState extends BasicGameState{
 		if (container.getInput().isKeyPressed(Input.KEY_RIGHT)) {
 			ready = true;
 		}
+		if (container.getInput().isKeyPressed(Input.KEY_LEFT) && ready) {
+			dX -= 4;
+		}
 		if (400 + dX > -10 && ready) {
 			blockyAnimation.start();
-			dX += 11;
+			dX += 15;
 		}	
 		if ((container.getInput().isKeyDown(Input.KEY_SPACE) || container.getInput().isKeyDown(Input.KEY_UP)) && !isJumping) {
 			isJumping = true;
