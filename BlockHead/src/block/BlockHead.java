@@ -28,5 +28,5 @@ public class BlockHead extends StateBasedGame{
 		this.addState(new GameOverState());
 		this.addState(new GameWinState());
 	}
-
+	
 }
