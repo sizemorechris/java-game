@@ -24,12 +24,14 @@ public class GameState extends BasicGameState{
 	private Image gold;
 	private Rectangle player;
 	private Rectangle[] floors;
+	private boolean[] isSafe;
 	private boolean isJumping;
 	private boolean collision;
 	private boolean dead;
 	private boolean ready;
 	private boolean win;
 	private int lives;
+	private int random;
 	private int dX;
 	private int dY;
 	private double vY;
@@ -42,8 +44,9 @@ public class GameState extends BasicGameState{
 		blockyAnimation = new Animation(blockySheet, 150);
 		tilesSheet = new SpriteSheet("res/tiless.png", 80, 80);
 		blockHead = new Image("res/blockHead.png");
-		player = new Rectangle(400, 350, 30, 100);
-		floors = new Rectangle[40];
+		player = new Rectangle(400, 400, 1, 100);
+		floors = new Rectangle[100];
+		isSafe = new boolean[100];
 		ready = false;
 		background = new Image("res/background.png");
 		gold = new Image("res/gold.png");
@@ -52,9 +55,23 @@ public class GameState extends BasicGameState{
 		dead = false;
 		dX = 0;
 		dY = 0;
-		lives = 3;
+		lives = 5;
+		random = 0;
 		vY = 160;
 		tY = 0.0;
+		updateWorld();
+	}
+	
+	public void updateWorld() {
+		for (int i = 0; i < 99; i++) {
+			random = (int)(Math.random() * 3);
+			if ((random == 0 || random == 2) && i > 9 && (isSafe[i - 3] && isSafe[i - 4])) {
+				isSafe[i] = false;
+			} else {
+				isSafe[i] = true;
+			}
+		}
+		isSafe[99] = true;
 	}
 
 	@Override
@@ -80,22 +97,21 @@ public class GameState extends BasicGameState{
 			ready = false;
 			lives--;
 		} else if (win){
-			g.translate(0, 0);
-			dX = 0;
-			dY = 0;
 			win = false;
 			ready = false;
+			g.translate(0, 0);
 		} else {
 			g.translate(-dX, 0);
 		}
 		g.setColor(Color.black);
-		for (int i = 0; i < 40; i++) {
-			if (i == 10 || i == 15 || i == 16 || i == 22 || i == 23 || i == 24 || i == 30 || i == 31 || i == 32 || i == 35 || i == 36 || i== 37) {
+		for (int i = 0; i < 100; i++) {
+			random = (int)(Math.random() * 3);
+			if (!isSafe[i]) {
 				floors[i] = new Rectangle(0 + 80 * i, 444, 80, 2);
 				tilesSheet.getSprite(2, 0).draw(0 + 80 * i, 446);
 				tilesSheet.getSprite(1, 0).draw(0 + 80 * i, 526);
 			} else {
-				if(i == 39) {
+				if(i == 99) {
 					g.drawImage(gold, 0 + 80 * i, 366);
 				}
 				floors[i] = new Rectangle(0 + 80 * i, 444, 80, 2);
@@ -104,9 +120,9 @@ public class GameState extends BasicGameState{
 			}
 		}
 		blockHead.draw(50 + dX, 50, 50, 50);
-		player.setX(410 + dX);
+		player.setX(420 + dX);
 		player.setY(345 + dY);
-		//g.draw(player);
+		//g.draw(player); draw hit box
 		g.drawString("x " + lives, 110 + dX, 68); 
 		blockyAnimation.draw(400 + dX, 354 + dY);
 	}
@@ -116,25 +132,26 @@ public class GameState extends BasicGameState{
 			throws SlickException {
 		blockyAnimation.stop();
 		collision = false;
-		for (int i = 0; i < 40; i++) {
+		for (int i = 0; i < 100; i++) {
 			if (player.intersects(floors[i])) {
 				collision = true;
-				if (i == 10 || i == 15 || i == 16 || i == 22 || i == 23 || i == 24 || i == 30 || i == 31 || i == 32 || i == 35 || i == 36 || i== 37) {
+				if (!isSafe[i]) {
 					dead = true;
 				}
 			}
 		}
 		if (dead && lives == 1) {
-			lives = 4;
+			lives = 6;
 			ready = false;
+			updateWorld();
 			sbg.enterState(1, new FadeOutTransition(), new FadeInTransition());
 		}
-		if (dX > 2820) {
+		if (dX > 7550) {
 			win = true;
-			lives = 3;
-			ready = false;
-			dY = 0;
+			lives = 5;
 			dX = 0;
+			dY = 0;
+			updateWorld();
 			sbg.enterState(2, new FadeOutTransition(), new FadeInTransition());
 		}
 		if (container.getInput().isKeyPressed(Input.KEY_RIGHT)) {
@@ -142,7 +159,7 @@ public class GameState extends BasicGameState{
 		}
 		if (400 + dX > -10 && ready) {
 			blockyAnimation.start();
-			dX += 21;
+			dX += 10;
 		}	
 		if ((container.getInput().isKeyDown(Input.KEY_SPACE) || container.getInput().isKeyDown(Input.KEY_UP)) && !isJumping) {
 			isJumping = true;
@@ -150,7 +167,6 @@ public class GameState extends BasicGameState{
 		if (isJumping) {
 			tY += 1/60.0;
 		}
-		
 		dY = -(int)Math.round((vY * tY - 200 * tY * tY));
 		if (collision) {
 			tY = 0;

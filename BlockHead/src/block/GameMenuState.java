@@ -20,7 +20,6 @@ public class GameMenuState extends BasicGameState{
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg)
 			throws SlickException {
-		// TODO Auto-generated method stub
 		enter = new Image("res/enter.png");
 		background = new Image("res/background.png");
 		title = new Image("res/title.png");
@@ -29,7 +28,6 @@ public class GameMenuState extends BasicGameState{
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-		// TODO Auto-generated method stub
 		g.setBackground(Color.white);
 		g.drawImage(background, 0, 0);
 		g.drawImage(title, 200, 50);

@@ -18,8 +18,7 @@ public class BlockHead extends StateBasedGame{
 		app.setTargetFrameRate(60);
 		app.setAlwaysRender(true);
 		app.setDisplayMode(800, 600, false);
-		app.start();	
-		
+		app.start();
 	}
 
 	@Override
